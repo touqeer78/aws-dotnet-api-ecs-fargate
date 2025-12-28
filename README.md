@@ -28,10 +28,11 @@ It is designed as a **proof of concept (PoC)** to showcase modern cloud-native d
 
 ## 🧪 Deployment
 
-````bash
+```bash
 cd infra/cdk
 cdk deploy
 ```
+
 ---
 
 ## 🛠️ Tech Stack
@@ -62,4 +63,4 @@ cdk deploy
 ├── docs/
 │   └── architecture.png
 └── README.md
-````
+```
