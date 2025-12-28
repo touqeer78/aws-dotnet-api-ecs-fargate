@@ -29,7 +29,7 @@ export class ApiStack extends Stack {
         cluster,
         cpu: 256,
         memoryLimitMiB: 512,
-        desiredCount: 1,
+        desiredCount: 2,
         publicLoadBalancer: true,
         taskImageOptions: {
           image: ecs.ContainerImage.fromAsset(
