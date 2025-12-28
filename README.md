@@ -16,9 +16,21 @@ It is designed as a **proof of concept (PoC)** to showcase modern cloud-native d
 
 ---
 
-## 🧱 Architecture Diagram
+## 🧱 How It Works
 
-![Architecture Diagram](./docs/architecture.png)
+1. The API is packaged into a Docker image using a multi-stage Dockerfile
+2. AWS CDK builds the image and pushes it to Amazon ECR
+3. ECS Fargate runs the container without managing servers
+4. ALB routes traffic and performs health checks on /health
+5. The service is accessible via the ALB DNS name
+
+---
+
+## 🧪 Deployment
+
+````bash
+cd infra/cdk
+cdk deploy
 
 ---
 
@@ -50,4 +62,4 @@ It is designed as a **proof of concept (PoC)** to showcase modern cloud-native d
 ├── docs/
 │   └── architecture.png
 └── README.md
-```
+````
