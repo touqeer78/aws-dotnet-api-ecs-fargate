@@ -1,0 +1,23 @@
+# .NET
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.user
+*.suo
+*.csproj.user
+
+# Node / CDK
+node_modules/
+package-lock.json
+npm-debug.log
+yarn-error.log
+
+# Visual Studio / VSCode
+.vscode/
+*.vs/
+*.vscode/settings.json
+
+# CDK outputs
+cdk.out/
