@@ -1,16 +1,48 @@
 import * as cdk from "aws-cdk-lib";
+import { Stack, StackProps } from "aws-cdk-lib";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as ecs_patterns from "aws-cdk-lib/aws-ecs-patterns";
+import * as path from "path";
 import { Construct } from "constructs";
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
 
-export class ApiStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+export class ApiStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    // 1️⃣ Create VPC (2 AZs)
+    const vpc = new ec2.Vpc(this, "ApiVpc", {
+      maxAzs: 2,
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'InfraQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    // 2️⃣ ECS Cluster
+    const cluster = new ecs.Cluster(this, "ApiCluster", {
+      vpc,
+      clusterName: "ApiCluster",
+    });
+
+    // 3️⃣ Fargate Service with ALB
+    const apiService = new ecs_patterns.ApplicationLoadBalancedFargateService(
+      this,
+      "ApiService",
+      {
+        cluster,
+        cpu: 256,
+        memoryLimitMiB: 512,
+        desiredCount: 1,
+        publicLoadBalancer: true,
+        taskImageOptions: {
+          image: ecs.ContainerImage.fromAsset(
+            path.join(__dirname, "../../app/Api")
+          ),
+          containerPort: 80,
+        },
+      }
+    );
+
+    // ✅ Configure ALB health check
+    apiService.targetGroup.configureHealthCheck({
+      path: "/health",
+    });
   }
 }
