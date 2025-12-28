@@ -37,6 +37,7 @@ export class ApiStack extends Stack {
           ),
           containerPort: 80,
         },
+        healthCheckGracePeriod: cdk.Duration.seconds(60), // for this app this really does not matter. however, for apps that take time to start, this is useful.
       }
     );
 
